@@ -16,10 +16,10 @@ namespace ImageFadeOut
         [Required]
         public string InputImage { get; }
 
-        [Option("-s|--start", Description = "FadeOut start point (defaukt: 0)")]
+        [Option("-s|--start", Description = "FadeOut start point (default: 0)")]
         public int Start { get; } = 0;
 
-        [Option("-d|--direction", Description = "FadeOut direction (Top, Bottom, Left, Right) (defaut: Bottom)")]
+        [Option("-d|--direction", Description = "FadeOut direction (Top, Bottom, Left, Right) (default: Bottom)")]
         public FadeOutDirection Direction { get; } = FadeOutDirection.Bottom;
 
         [Argument(0, Description = "The output image")]
