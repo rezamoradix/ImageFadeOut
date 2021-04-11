@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "icwa1+24+N/4CwYYqFYPvKbEPg9fTuHRM3uu6X9MiRtwsYyWk8jY/jWUmxs0BorqhAxsb4DIm+gQAoMzZlax5w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Rey\\source\\myapps\\ImageFadeOut\\ImageFadeOut.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Rey\\.nuget\\packages\\mcmaster.extensions.commandlineutils\\3.1.0\\mcmaster.extensions.commandlineutils.3.1.0.nupkg.sha512",
+    "C:\\Users\\Rey\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\Rey\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\Rey\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
+    "C:\\Users\\Rey\\.nuget\\packages\\system.drawing.common\\5.0.2\\system.drawing.common.5.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
