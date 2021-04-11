@@ -1,0 +1,4 @@
+lib/*
+!.gitkeep
+bin/*
+obj/*
