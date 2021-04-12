@@ -1,9 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using McMaster.Extensions.CommandLineUtils;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Collections.Generic;
 
 namespace ImageFadeOut
 {
@@ -32,61 +30,47 @@ namespace ImageFadeOut
         {
             sourceImage = new Bitmap(Bitmap.FromFile(InputImage));
 
+            switch (Direction)
+            {
+                case FadeOutDirection.Top:
+                    sourceImage.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                    break;
+                case FadeOutDirection.Left:
+                    sourceImage.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                    break;
+                case FadeOutDirection.Right:
+                    sourceImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    break;
+            }
+
             outputImage = new Bitmap(sourceImage.Width, sourceImage.Height);
 
             float opacity = 1;
-            float opStep = opacity / ((Direction is FadeOutDirection.Bottom or FadeOutDirection.Top ? sourceImage.Height : sourceImage.Width) - Start);
+            float opStep = opacity / (sourceImage.Height - Start);
+
+            for (int i = 0; i < sourceImage.Height; i++)
+            {
+                Draw(opacity, i);
+                if (i > Start) opacity -= opStep;
+            }
+
+            sourceImage.Dispose();
 
             switch (Direction)
             {
                 case FadeOutDirection.Top:
-                    if (Start != 0)
-                        using (var g = Graphics.FromImage(outputImage))
-                            g.DrawImage(sourceImage, new Rectangle(0, sourceImage.Height - Start, sourceImage.Width, Start), 0, sourceImage.Height - Start, sourceImage.Width, Start, GraphicsUnit.Pixel);
-
-                    for (int i = sourceImage.Height - Start; i > 0; i--)
-                    {
-                        Draw(opacity, i);
-                        opacity -= opStep;
-                    }
+                    outputImage.RotateFlip(RotateFlipType.Rotate180FlipNone);
                     break;
                 case FadeOutDirection.Left:
-                    if (Start != 0)
-                        using (var g = Graphics.FromImage(outputImage))
-                            g.DrawImage(sourceImage, new Rectangle(sourceImage.Width - Start, 0, Start, sourceImage.Height), sourceImage.Width - Start, 0, Start, sourceImage.Height, GraphicsUnit.Pixel);
-
-                    for (int i = sourceImage.Width - Start; i > 0; i--)
-                    {
-                        DrawH(opacity, i);
-                        opacity -= opStep;
-                    }
+                    outputImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
                     break;
                 case FadeOutDirection.Right:
-                    if (Start != 0)
-                        using (var g = Graphics.FromImage(outputImage))
-                            g.DrawImage(sourceImage, new Rectangle(0, 0, Start, sourceImage.Height), 0, 0, Start, sourceImage.Height, GraphicsUnit.Pixel);
-
-                    for (int i = Start; i < sourceImage.Width; i++)
-                    {
-                        DrawH(opacity, i);
-                        opacity -= opStep;
-                    }
-                    break;
-
-                default:
-                    if (Start != 0)
-                        using (var g = Graphics.FromImage(outputImage))
-                            g.DrawImage(sourceImage, new Rectangle(0, 0, sourceImage.Width, Start), 0, 0, sourceImage.Width, Start, GraphicsUnit.Pixel);
-
-                    for (int i = Start; i < sourceImage.Height; i++)
-                    {
-                        Draw(opacity, i);
-                        opacity -= opStep;
-                    }
+                    outputImage.RotateFlip(RotateFlipType.Rotate270FlipNone);
                     break;
             }
 
             outputImage.Save(OutputImage, ImageFormat.Png);
+            outputImage.Dispose();
         }
 
         private void Draw(float opacity, int i)
@@ -100,19 +84,6 @@ namespace ImageFadeOut
                 ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Default);
 
                 g.DrawImage(sourceImage, new Rectangle(0, i, sourceImage.Width, 1), 0, i, sourceImage.Width, 1, GraphicsUnit.Pixel, ia);
-            }
-        }
-        private void DrawH(float opacity, int i)
-        {
-            using (var g = Graphics.FromImage(outputImage))
-            {
-                ColorMatrix cm = new ColorMatrix();
-                cm.Matrix33 = opacity;
-
-                ImageAttributes ia = new ImageAttributes();
-                ia.SetColorMatrix(cm, ColorMatrixFlag.Default, ColorAdjustType.Default);
-
-                g.DrawImage(sourceImage, new Rectangle(i, 0, 1, sourceImage.Height), i, 0, 1, sourceImage.Height, GraphicsUnit.Pixel, ia);
             }
         }
     }
