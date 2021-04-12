@@ -11,6 +11,7 @@ namespace ImageFadeOut
 
         [Option("-i|--input", Description = "The input image")]
         [FileExists]
+        [FileExtensions(Extensions = ".png,.jpg,.jpeg,.gif,.bmp,.exif,.tiff")]
         [Required]
         public string InputImage { get; }
 
@@ -21,6 +22,7 @@ namespace ImageFadeOut
         public FadeOutDirection Direction { get; } = FadeOutDirection.Bottom;
 
         [Argument(0, Description = "The output image")]
+        [FileExtensions(Extensions = ".png")]
         public string OutputImage { get; } = "output.png";
 
         Bitmap sourceImage;
